@@ -1,4 +1,4 @@
-package fullstackOS.org
+package fullstackOS.org;
 
 public class ExchangeRateProvider {
     public static final double SEK_TO_USD = 0.11;
