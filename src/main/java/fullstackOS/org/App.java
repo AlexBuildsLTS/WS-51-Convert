@@ -10,10 +10,7 @@ public class App {
         boolean exit = false;
 
         do {
-            // Start with doing Display Menu
             displayMenu();
-
-            // users gets choice
             int choice = getChoice(scanner);
 
             // Operations
@@ -42,7 +39,6 @@ public class App {
         scanner.close();
     }
 
-    // Display menu for users
     private static void displayMenu() {
         System.out.println("\nCurrency Converter Menu:");
         System.out.println("1. Convert SEK to USD");
@@ -52,7 +48,6 @@ public class App {
         System.out.println("0. Exit");
         System.out.print("Enter your choice: ");
     }
-
 
     private static int getChoice(Scanner scanner) {
         int choice = -1;
@@ -64,26 +59,35 @@ public class App {
         return choice;
     }
 
-
     private static void performConversion(Scanner scanner, String fromCurrency, String toCurrency) {
         System.out.print("Enter amount in " + fromCurrency + ": ");
         String amountStr = scanner.nextLine();
 
-
-        if (!InputValidator.isValidAmount(amountStr)) {
-            System.out.println("Invalid amount. Please enter a positive number.");
+        // if the user puts a invalid value
+        if (!isValidAmount(amountStr)) {
+            System.out.println("Invalid amount. Please enter a valid number 0-4");
             return;
         }
 
         double amount = Double.parseDouble(amountStr);
         double convertedAmount = CurrencyConverter.convert(fromCurrency, toCurrency, amount);
 
-        // Get the current date and time
+        // Put in date and time
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDateTime = now.format(formatter);
 
-        // Display the conversion result
+
         System.out.printf("%.2f %s = %.2f %s (Conversion Date: %s)%n", amount, fromCurrency, convertedAmount, toCurrency, formattedDateTime);
+    }
+
+    //method
+    private static boolean isValidAmount(String input) {
+        try {
+            double amount = Double.parseDouble(input);
+            return amount >= 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
