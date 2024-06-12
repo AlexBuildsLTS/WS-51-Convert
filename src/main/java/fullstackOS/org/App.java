@@ -9,10 +9,14 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
-        while (!exit) {
+        do {
+            // Start with doing Display Menu
             displayMenu();
+
+            // users gets choice
             int choice = getChoice(scanner);
 
+            // Operations
             switch (choice) {
                 case 1:
                     performConversion(scanner, "SEK", "USD");
@@ -27,17 +31,18 @@ public class App {
                     performConversion(scanner, "EUR", "SEK");
                     break;
                 case 0:
-                    exit = true;
+                    exit = true; // Set the exit flag to true to break the loop
                     System.out.println("Shutting down...");
                     break;
                 default:
                     System.out.println("Invalid choice, please try again.");
             }
-        }
+        } while (!exit);
 
         scanner.close();
     }
 
+    // Display menu for users
     private static void displayMenu() {
         System.out.println("\nCurrency Converter Menu:");
         System.out.println("1. Convert SEK to USD");
@@ -47,6 +52,7 @@ public class App {
         System.out.println("0. Exit");
         System.out.print("Enter your choice: ");
     }
+
 
     private static int getChoice(Scanner scanner) {
         int choice = -1;
@@ -58,9 +64,11 @@ public class App {
         return choice;
     }
 
+
     private static void performConversion(Scanner scanner, String fromCurrency, String toCurrency) {
         System.out.print("Enter amount in " + fromCurrency + ": ");
         String amountStr = scanner.nextLine();
+
 
         if (!InputValidator.isValidAmount(amountStr)) {
             System.out.println("Invalid amount. Please enter a positive number.");
@@ -70,9 +78,12 @@ public class App {
         double amount = Double.parseDouble(amountStr);
         double convertedAmount = CurrencyConverter.convert(fromCurrency, toCurrency, amount);
 
+        // Get the current date and time
+        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDateTime = LocalDateTime.now().format(formatter);
+        String formattedDateTime = now.format(formatter);
 
+        // Display the conversion result
         System.out.printf("%.2f %s = %.2f %s (Conversion Date: %s)%n", amount, fromCurrency, convertedAmount, toCurrency, formattedDateTime);
     }
 }
